@@ -13,6 +13,7 @@ const MyParticipations: React.FC = () => {
     if (user) {
       loadParticipations();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const loadParticipations = async () => {

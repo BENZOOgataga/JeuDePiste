@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { gameService, riddleService, Game, Riddle } from '../services/gameService';
+import { gameService, riddleService } from '../services/gameService';
 
 interface RiddleForm {
   title: string;

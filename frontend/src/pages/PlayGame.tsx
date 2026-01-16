@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { participationService, riddleService, Participation, Riddle } from '../services/gameService';
+import { participationService, riddleService, Participation } from '../services/gameService';
 import { geolocationService, LocationCoords } from '../services/geolocationService';
 import Map from '../components/Map';
 
@@ -20,6 +20,7 @@ const PlayGame: React.FC = () => {
   useEffect(() => {
     loadParticipation();
     getCurrentLocation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participationId]);
 
   const loadParticipation = async () => {

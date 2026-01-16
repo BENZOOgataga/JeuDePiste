@@ -10,6 +10,7 @@ const Congratulations: React.FC = () => {
 
   useEffect(() => {
     loadParticipation();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [participationId]);
 
   const loadParticipation = async () => {

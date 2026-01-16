@@ -14,6 +14,7 @@ const GameDetail: React.FC = () => {
 
   useEffect(() => {
     loadGame();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const loadGame = async () => {
