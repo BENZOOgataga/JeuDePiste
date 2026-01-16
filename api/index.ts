@@ -18,13 +18,14 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/games', gameRoutes);
-app.use('/api/riddles', riddleRoutes);
-app.use('/api/participations', participationRoutes);
+// Routes sans préfixe /api car Vercel gère déjà /api/*
+app.use('/auth', authRoutes);
+app.use('/users', userRoutes);
+app.use('/games', gameRoutes);
+app.use('/riddles', riddleRoutes);
+app.use('/participations', participationRoutes);
 
-app.get('/api/health', (req, res) => {
+app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'API is running' });
 });
 
