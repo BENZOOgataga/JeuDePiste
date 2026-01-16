@@ -6,51 +6,40 @@ Vercel déploie automatiquement backend + frontend + base de données.
 
 ## 📋 Étapes
 
-### 1️⃣ Installer Vercel CLI
+### 1️⃣ Créer le projet sur Vercel
+- Va sur https://vercel.com
+- Connecte ton GitHub
+- Importe le repo **BENZOOgataga/JeuDePiste**
+- Framework: **Create React App**
+- Node.js Version: **20.x**
+- Clique **Deploy**
+
+### 2️⃣ Installer Vercel CLI (optionnel)
 ```bash
 npm install -g vercel
-```
-
-### 2️⃣ Se connecter
-```bash
 vercel login
 ```
 
-### 3️⃣ Déployer
-```bash
-cd JeuDePiste
-vercel
-```
+### 3️⃣ Configurer la base de données
 
-### 4️⃣ Configurer la base de données
-
-Option A: **Vercel Postgres** (gratuit, recommandé)
+**Vercel Postgres** (gratuit, recommandé)
 - Dashboard Vercel → Storage → Create Database → Postgres
 - Copier `DATABASE_URL` automatiquement lié au projet
 
-Option B: **Base externe** (Supabase, Neon, etc.)
-```bash
-vercel env add DATABASE_URL production
-# Coller: postgresql://user:password@host:5432/database
-```
-
-### 5️⃣ Ajouter les secrets
+### 4️⃣ Ajouter les secrets
 ```bash
 vercel env add JWT_SECRET production
 # Entrer une clé secrète forte
 ```
 
-### 6️⃣ Exécuter les migrations
+### 5️⃣ Exécuter les migrations
 
-Une fois déployé, via Vercel Dashboard → Settings → Functions:
+Localement avec `DATABASE_URL` de production:
 ```bash
-npx prisma migrate deploy
-npx prisma db seed
-```
-
-Ou localement avec `DATABASE_URL` de production:
-```bash
-DATABASE_URL="postgresql://..." npx prisma migrate deploy
+vercel env pull .env.production
+cd backend
+DATABASE_URL="<url-from-env>" npx prisma migrate deploy
+DATABASE_URL="<url-from-env>" npm run db:seed
 ```
 
 ## 🎯 Configuration automatique
