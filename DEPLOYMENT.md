@@ -282,7 +282,7 @@ sudo certbot --nginx -d votre-domaine.com
 
 **backend/Dockerfile:**
 ```dockerfile
-FROM node:18-alpine
+FROM node:24-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
@@ -295,7 +295,7 @@ CMD ["npm", "start"]
 
 **frontend/Dockerfile:**
 ```dockerfile
-FROM node:18-alpine as build
+FROM node:24-alpine as build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
