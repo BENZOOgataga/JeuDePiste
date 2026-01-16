@@ -15,10 +15,15 @@
     "build:frontend": "cd frontend && npm run build",
     "start": "cd backend && npm start"
   },
-  "keywords": ["jeu-de-piste", "geolocalisation", "enigmes"],
+  "keywords": [
+    "jeu-de-piste",
+    "geolocalisation",
+    "enigmes"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@vercel/node": "^5.5.23",
     "concurrently": "^8.2.2"
   }
 }
