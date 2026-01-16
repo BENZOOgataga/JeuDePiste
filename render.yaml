@@ -1,0 +1,28 @@
+services:
+  # Backend API
+  - type: web
+    name: jeu-de-piste-backend
+    env: node
+    region: frankfurt
+    plan: free
+    branch: main
+    rootDir: backend
+    buildCommand: npm install && npx prisma generate && npm run build
+    startCommand: npm start
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: jeu-de-piste-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: NODE_ENV
+        value: production
+
+databases:
+  - name: jeu-de-piste-db
+    databaseName: jeu_de_piste
+    region: frankfurt
+    plan: free
