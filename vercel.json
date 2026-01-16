@@ -11,11 +11,5 @@
       "src": "/api/(.*)",
       "dest": "/backend/src/index.ts"
     }
-  ],
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "JWT_SECRET": "@jwt_secret",
-    "JWT_EXPIRES_IN": "7d",
-    "NODE_ENV": "production"
-  }
+  ]
 }

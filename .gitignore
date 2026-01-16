@@ -80,3 +80,4 @@ backend/dist
 .eslintcache
 
 node_modules/
+.vercel
