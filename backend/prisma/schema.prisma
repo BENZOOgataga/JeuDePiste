@@ -1,0 +1,108 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  PARTICIPANT
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  username  String   @unique
+  password  String
+  role      UserRole @default(PARTICIPANT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  createdGames Game[]        @relation("GameCreator")
+  participations Participation[]
+  
+  @@map("users")
+}
+
+model Game {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  isActive    Boolean  @default(true)
+  startDate   DateTime?
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  creatorId   String
+  creator     User     @relation("GameCreator", fields: [creatorId], references: [id])
+  riddles     Riddle[]
+  participations Participation[]
+
+  @@map("games")
+}
+
+model Riddle {
+  id          String   @id @default(uuid())
+  title       String
+  question    String
+  answer      String
+  hint        String?
+  latitude    Float
+  longitude   Float
+  radius      Float    @default(100) // Rayon en mètres pour valider la géolocalisation
+  order       Int      // Ordre de l'énigme dans le jeu
+  points      Int      @default(10)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  gameId      String
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  answers     Answer[]
+
+  @@map("riddles")
+}
+
+model Participation {
+  id          String   @id @default(uuid())
+  status      String   @default("in_progress") // in_progress, completed, abandoned
+  score       Int      @default(0)
+  startedAt   DateTime @default(now())
+  completedAt DateTime?
+
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  gameId      String
+  game        Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  answers     Answer[]
+
+  @@unique([userId, gameId])
+  @@map("participations")
+}
+
+model Answer {
+  id          String   @id @default(uuid())
+  answer      String
+  isCorrect   Boolean
+  latitude    Float?
+  longitude   Float?
+  answeredAt  DateTime @default(now())
+
+  // Relations
+  participationId String
+  participation   Participation @relation(fields: [participationId], references: [id], onDelete: Cascade)
+  riddleId        String
+  riddle          Riddle        @relation(fields: [riddleId], references: [id])
+
+  @@map("answers")
+}
