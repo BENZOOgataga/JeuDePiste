@@ -21,6 +21,22 @@ services:
       - key: NODE_ENV
         value: production
 
+  # Frontend React
+  - type: web
+    name: jeu-de-piste-frontend
+    env: static
+    region: frankfurt
+    branch: main
+    rootDir: frontend
+    buildCommand: npm install && REACT_APP_API_URL=$BACKEND_URL npm run build
+    staticPublishPath: build
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: jeu-de-piste-backend
+          type: web
+          property: url
+
 databases:
   - name: jeu-de-piste-db
     databaseName: jeu_de_piste
