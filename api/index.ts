@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import express from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from '../backend/src/routes/auth.routes';
@@ -10,7 +10,7 @@ import participationRoutes from '../backend/src/routes/participation.routes';
 
 dotenv.config();
 
-const app = express();
+const app: Express = express();
 
 app.use(cors({
   origin: true,
@@ -28,4 +28,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'API is running' });
 });
 
-export default app;
+// Vercel serverless handler
+export default (req: VercelRequest, res: VercelResponse) => {
+  return app(req as any, res as any);
+};
