@@ -69,7 +69,7 @@ const MyParticipations: React.FC = () => {
                 <div style={{ marginTop: '0.5rem' }}>
                   Réponses correctes: {participation.answers?.filter(a => a.isCorrect).length || 0}
                   {' / '}
-                  {participation.answers?.length || 0}
+                  {participation.game?.riddles?.length || 0}
                 </div>
               </div>
 

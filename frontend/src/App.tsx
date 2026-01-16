@@ -10,6 +10,7 @@ import PlayGame from './pages/PlayGame';
 import AdminDashboard from './pages/AdminDashboard';
 import CreateGame from './pages/CreateGame';
 import MyParticipations from './pages/MyParticipations';
+import Congratulations from './pages/Congratulations';
 import { authService } from './services/authService';
 
 const App: React.FC = () => {
@@ -51,6 +52,12 @@ const App: React.FC = () => {
               path="/play/:participationId" 
               element={
                 isAuthenticated ? <PlayGame /> : <Navigate to="/login" />
+              } 
+            />
+            <Route 
+              path="/congratulations/:participationId" 
+              element={
+                isAuthenticated ? <Congratulations /> : <Navigate to="/login" />
               } 
             />
             <Route 

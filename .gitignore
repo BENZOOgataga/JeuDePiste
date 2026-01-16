@@ -49,9 +49,9 @@ backend/prisma/migrations/**/migration.sql
 .docker/
 docker-compose.override.yml
 
-# Backup (optionnel - à commenter si vous voulez versionner les backups)
-backups/*.sql
-backups/*.sql.gz
+# Backup - Les fichiers SQL de backup sont inclus pour le rendu du projet
+# backups/*.sql
+# backups/*.sql.gz
 
 # Tests
 coverage/

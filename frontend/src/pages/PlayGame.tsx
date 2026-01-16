@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { participationService, riddleService, Participation, Riddle } from '../services/gameService';
 import { geolocationService, LocationCoords } from '../services/geolocationService';
 import Map from '../components/Map';
 
 const PlayGame: React.FC = () => {
   const { participationId } = useParams<{ participationId: string }>();
+  const navigate = useNavigate();
   const [participation, setParticipation] = useState<Participation | null>(null);
   const [currentRiddleIndex, setCurrentRiddleIndex] = useState(0);
   const [answer, setAnswer] = useState('');
@@ -53,26 +54,35 @@ const PlayGame: React.FC = () => {
 
   const handleSubmitAnswer = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!participation || !userLocation) return;
+    if (!participation) return;
 
     const currentRiddle = participation.game?.riddles?.[currentRiddleIndex];
     if (!currentRiddle) return;
 
-    // Vérifier la distance
-    const distance = geolocationService.calculateDistance(
-      userLocation.latitude,
-      userLocation.longitude,
-      currentRiddle.latitude,
-      currentRiddle.longitude
-    );
+    // Mode test/développement : toujours utiliser les coordonnées de l'énigme
+    const latitude = currentRiddle.latitude;
+    const longitude = currentRiddle.longitude;
 
-    if (distance > currentRiddle.radius) {
-      setFeedback({
-        isCorrect: false,
-        message: `Vous êtes trop loin ! Distance: ${Math.round(distance)}m (max: ${currentRiddle.radius}m)`,
-        isLocationValid: false
-      });
-      return;
+    // En mode test, on affiche juste la distance sans bloquer
+    if (userLocation) {
+      const distance = geolocationService.calculateDistance(
+        userLocation.latitude,
+        userLocation.longitude,
+        currentRiddle.latitude,
+        currentRiddle.longitude
+      );
+      console.log(`Distance: ${Math.round(distance)}m (Rayon autorisé: ${currentRiddle.radius}m)`);
+      // Note: En production, décommenter le bloc ci-dessous pour bloquer si trop loin
+      /*
+      if (distance > currentRiddle.radius) {
+        setFeedback({
+          isCorrect: false,
+          message: `Vous êtes trop loin ! Distance: ${Math.round(distance)}m (max: ${currentRiddle.radius}m)`,
+          isLocationValid: false
+        });
+        return;
+      }
+      */
     }
 
     setSubmitting(true);
@@ -81,8 +91,8 @@ const PlayGame: React.FC = () => {
     try {
       const result = await riddleService.validateAnswer(currentRiddle.id, {
         answer,
-        latitude: userLocation.latitude,
-        longitude: userLocation.longitude,
+        latitude,
+        longitude,
         participationId
       });
 
@@ -96,8 +106,9 @@ const PlayGame: React.FC = () => {
             setFeedback(null);
             loadParticipation(); // Recharger pour mettre à jour le score
           } else {
-            // Compléter la participation
+            // Compléter la participation et rediriger
             participationService.completeParticipation(participationId!);
+            navigate(`/congratulations/${participationId}`);
           }
         }, 2000);
       }
@@ -116,15 +127,10 @@ const PlayGame: React.FC = () => {
   const currentRiddle = riddles[currentRiddleIndex];
   const isCompleted = currentRiddleIndex >= riddles.length;
 
+  // Rediriger vers la page de félicitations si complété
   if (isCompleted) {
-    return (
-      <div className="card" style={{ textAlign: 'center', marginTop: '2rem' }}>
-        <h1>🎉 Félicitations !</h1>
-        <h2>Vous avez terminé le jeu !</h2>
-        <div className="score">{participation.score} points</div>
-        <p>Vous avez résolu toutes les énigmes avec succès !</p>
-      </div>
-    );
+    navigate(`/congratulations/${participationId}`);
+    return null;
   }
 
   const mapMarkers = currentRiddle && userLocation ? [
@@ -208,7 +214,7 @@ const PlayGame: React.FC = () => {
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
                   required
-                  disabled={!userLocation || distance === null || distance > currentRiddle.radius}
+                  placeholder="Tapez votre réponse ici"
                 />
               </div>
 
@@ -216,10 +222,16 @@ const PlayGame: React.FC = () => {
                 type="submit" 
                 className="primary" 
                 style={{ width: '100%' }}
-                disabled={submitting || !userLocation || distance === null || distance > currentRiddle.radius}
+                disabled={submitting}
               >
                 {submitting ? 'Vérification...' : 'Valider la réponse'}
               </button>
+              
+              {(!userLocation || distance === null || (distance && distance > currentRiddle.radius)) && (
+                <div style={{ marginTop: '0.5rem', fontSize: '0.9rem', color: '#e67e22' }}>
+                  ⚠️ Mode test : validation sans vérification GPS
+                </div>
+              )}
             </form>
 
             {feedback && (

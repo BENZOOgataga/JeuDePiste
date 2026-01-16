@@ -6,15 +6,16 @@ echo "🚀 Démarrage du déploiement..."
 # Couleurs
 GREEN='\033[0;32m'
 RED='\033[0;31m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
-# Vérifier que PostgreSQL est installé
+# Vérifier que PostgreSQL est installé (optionnel sur Windows)
 if ! command -v psql &> /dev/null; then
-    echo -e "${RED}❌ PostgreSQL n'est pas installé${NC}"
-    exit 1
+    echo -e "${YELLOW}⚠️  PostgreSQL CLI non détecté dans PATH (normal sur Windows)${NC}"
+    echo -e "${YELLOW}   Assurez-vous que PostgreSQL est installé et en cours d'exécution${NC}"
+else
+    echo -e "${GREEN}✅ PostgreSQL détecté${NC}"
 fi
-
-echo -e "${GREEN}✅ PostgreSQL détecté${NC}"
 
 # Vérifier que Node.js est installé
 if ! command -v node &> /dev/null; then

@@ -20,7 +20,12 @@ export const getUserParticipations = async (req: AuthRequest, res: Response) => 
           select: {
             id: true,
             title: true,
-            description: true
+            description: true,
+            riddles: {
+              select: {
+                id: true
+              }
+            }
           }
         },
         answers: {
