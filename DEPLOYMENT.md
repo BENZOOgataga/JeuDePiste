@@ -176,7 +176,7 @@ ssh user@votre-serveur-ip
 sudo apt update && sudo apt upgrade -y
 
 # Installer Node.js
-curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
 sudo apt install -y nodejs
 
 # Installer PostgreSQL

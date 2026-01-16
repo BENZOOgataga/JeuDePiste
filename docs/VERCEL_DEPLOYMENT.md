@@ -11,7 +11,7 @@ Vercel déploie automatiquement backend + frontend + base de données.
 - Connecte ton GitHub
 - Importe le repo **BENZOOgataga/JeuDePiste**
 - Framework: **Create React App**
-- Node.js Version: **20.x**
+- Node.js Version: **24.x**
 - Clique **Deploy**
 
 ### 2️⃣ Installer Vercel CLI (optionnel)

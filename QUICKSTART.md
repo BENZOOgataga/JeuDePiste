@@ -5,7 +5,7 @@ Ce guide vous permettra de lancer l'application en quelques minutes.
 ## ⚡ Installation Express (5 minutes)
 
 ### 1. Prérequis
-- Node.js 16+ installé
+- Node.js 24+ installé
 - PostgreSQL installé et en cours d'exécution
 - Git installé
 

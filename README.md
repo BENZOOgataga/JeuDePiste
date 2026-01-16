@@ -53,7 +53,7 @@ Application web moderne permettant de créer et jouer à des jeux de piste géol
 
 ## 📦 Prérequis
 
-- **Node.js** 16.x ou supérieur
+- **Node.js** 24.x ou supérieur
 - **npm** ou **yarn**
 - **PostgreSQL** 12.x ou supérieur (installé et en cours d'exécution)
 - **Git**
