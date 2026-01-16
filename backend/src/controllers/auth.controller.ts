@@ -47,10 +47,12 @@ export const register = async (req: Request, res: Response) => {
     });
 
     // Générer le token JWT
+    const jwtSecret = process.env.JWT_SECRET as string;
+    const jwtOptions: SignOptions = { expiresIn: process.env.JWT_EXPIRES_IN || '7d' };
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET as string,
-      { expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as string }
+      jwtSecret,
+      jwtOptions
     );
 
     res.status(201).json({ user, token });
@@ -85,10 +87,12 @@ export const login = async (req: Request, res: Response) => {
     }
 
     // Générer le token JWT
+    const jwtSecret = process.env.JWT_SECRET as string;
+    const jwtOptions: SignOptions = { expiresIn: process.env.JWT_EXPIRES_IN || '7d' };
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET as string,
-      { expiresIn: (process.env.JWT_EXPIRES_IN || '7d') as string }
+      jwtSecret,
+      jwtOptions
     );
 
     res.json({
