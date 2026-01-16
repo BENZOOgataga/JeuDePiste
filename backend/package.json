@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Backend API pour jeu de piste",
   "main": "dist/index.js",
+  "engines": {
+    "node": "24.x"
+  },
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build": "tsc",
